@@ -8,12 +8,12 @@ import streamlit as st
 
 
 st.set_page_config(
-    page_title="Genetic Codon AnnData Quick Explorer",
+    page_title="Genetic Codon Quick AnnData Explorer",
     page_icon="🧬",
     layout="wide",
 )
 
-st.title("Genetic Codon — AnnData Quick Explorer")
+st.title("Genetic Codon — Quick AnnData Explorer")
 st.caption("Interactive exploration of AnnData (.h5ad) objects for rapid dataset inspection.")
 
 st.sidebar.header("Settings")
