@@ -2,6 +2,7 @@ from io import BytesIO
 
 import anndata as ad
 import matplotlib.pyplot as plt
+import numpy as np
 import pandas as pd
 import streamlit as st
 
@@ -12,7 +13,7 @@ st.set_page_config(
     layout="wide",
 )
 
-st.title("🧬 Genetic Codon — AnnData Quick Explorer")
+st.title("Genetic Codon — AnnData Quick Explorer")
 st.caption("Interactive exploration of AnnData (.h5ad) objects for rapid dataset inspection.")
 
 st.sidebar.header("Settings")
@@ -27,6 +28,7 @@ Upload an `.h5ad` file to inspect:
 - metadata columns
 - embeddings such as UMAP/PCA
 - value counts from `obs`
+- gene expression on embeddings
 - downloadable summaries
 """
 )
@@ -75,6 +77,18 @@ def dataframe_to_excel_bytes(sheets: dict[str, pd.DataFrame]) -> bytes:
     return output.getvalue()
 
 
+def extract_gene_expression(adata: ad.AnnData, gene_name: str) -> np.ndarray:
+    gene_idx = adata.var_names.get_loc(gene_name)
+    expr = adata.X[:, gene_idx]
+
+    if hasattr(expr, "toarray"):
+        expr = expr.toarray().flatten()
+    else:
+        expr = np.asarray(expr).flatten()
+
+    return expr
+
+
 uploaded_file = st.file_uploader("Upload AnnData file", type=["h5ad"])
 
 if uploaded_file is None:
@@ -102,9 +116,8 @@ summary_text = build_summary_text(adata)
 with st.expander("Dataset Summary", expanded=True):
     st.code(summary_text, language="text")
 
-# Tabs
-tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(
-    ["Overview", "obs Metadata", "var Metadata", "Embeddings", "Counts", "Downloads"]
+tab1, tab2, tab3, tab4, tab5, tab6, tab7 = st.tabs(
+    ["Overview", "obs Metadata", "var Metadata", "Embeddings", "Gene Expression", "Counts", "Downloads"]
 )
 
 with tab1:
@@ -236,6 +249,77 @@ with tab4:
             st.pyplot(fig)
 
 with tab5:
+    st.subheader("Gene Expression")
+
+    obsm_keys = list(adata.obsm.keys())
+
+    if len(obsm_keys) == 0:
+        st.info("Gene expression plotting requires at least one embedding in `adata.obsm`.")
+    else:
+        preferred = "X_umap" if "X_umap" in obsm_keys else obsm_keys[0]
+        selected_embedding_gene = st.selectbox(
+            "Select embedding for gene expression",
+            obsm_keys,
+            index=obsm_keys.index(preferred),
+        )
+
+        gene_query = st.text_input("Enter gene symbol exactly as present in var_names", value="MS4A1")
+
+        if gene_query:
+            if gene_query in adata.var_names:
+                embedding = adata.obsm[selected_embedding_gene]
+
+                if embedding.shape[1] < 2:
+                    st.warning("Selected embedding has fewer than 2 dimensions.")
+                else:
+                    expr = extract_gene_expression(adata, gene_query)
+
+                    expr_df = pd.DataFrame(
+                        {
+                            "dim1": embedding[:, 0],
+                            "dim2": embedding[:, 1],
+                            "expression": expr,
+                        }
+                    )
+
+                    fig_expr, ax_expr = plt.subplots(figsize=(7, 5))
+                    sc = ax_expr.scatter(
+                        expr_df["dim1"],
+                        expr_df["dim2"],
+                        c=expr_df["expression"],
+                        s=point_size,
+                        alpha=0.8,
+                    )
+                    ax_expr.set_xlabel("Dimension 1")
+                    ax_expr.set_ylabel("Dimension 2")
+                    ax_expr.set_title(f"{gene_query} expression on {selected_embedding_gene}")
+                    ax_expr.grid(False)
+                    plt.colorbar(sc, ax=ax_expr, label="Expression")
+                    st.pyplot(fig_expr)
+
+                    st.markdown("**Expression summary**")
+                    expr_summary = pd.DataFrame(
+                        {
+                            "metric": ["min", "max", "mean", "median", "nonzero_cells"],
+                            "value": [
+                                float(np.min(expr)),
+                                float(np.max(expr)),
+                                float(np.mean(expr)),
+                                float(np.median(expr)),
+                                int(np.sum(expr > 0)),
+                            ],
+                        }
+                    )
+                    st.dataframe(expr_summary, use_container_width=True)
+                    dataframe_download(
+                        expr_summary,
+                        f"{gene_query}_expression_summary.csv",
+                        f"Download {gene_query} expression summary",
+                    )
+            else:
+                st.error("Gene not found in `adata.var_names`. Check the exact gene symbol in your dataset.")
+
+with tab6:
     st.subheader("Value Counts from obs")
 
     if len(adata.obs.columns) == 0:
@@ -272,7 +356,7 @@ with tab5:
             else:
                 st.info("Too many categories to display as a readable bar plot.")
 
-with tab6:
+with tab7:
     st.subheader("Downloads")
 
     obs_df = pd.DataFrame({"obs_column": adata.obs.columns})
