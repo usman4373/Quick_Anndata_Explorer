@@ -1,10 +1,10 @@
-# 🧬 Genetic Codon — AnnData Quick Explorer
+# Genetic Codon — Quick AnnData Explorer
 
 A lightweight tool to quickly inspect `.h5ad` (AnnData) files and generate instant summaries with minimal setup.
 
 ---
 
-## 🔍 Overview
+## Overview
 
 Working with single-cell datasets often requires loading full analysis pipelines just to understand the structure of the data.
 
@@ -16,7 +16,7 @@ This tool provides a fast way to:
 
 ---
 
-## ⚡ Features
+##  Features
 
 - Display AnnData shape (cells × genes)
 - List `obs` (cell metadata) columns
@@ -27,7 +27,7 @@ This tool provides a fast way to:
 
 ---
 
-## 🚀 Installation
+## Installation
 
 Clone the repository:
 
