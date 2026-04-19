@@ -1,4 +1,7 @@
-anndata>=0.10
-pandas>=2.0
-matplotlib>=3.8
-numpy>=1.26
+streamlit
+anndata
+scanpy
+pandas
+matplotlib
+numpy
+openpyxl
