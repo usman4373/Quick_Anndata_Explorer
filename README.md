@@ -1,49 +1,36 @@
-# Genetic Codon AnnData Quick Explorer
+# 🧬 Genetic Codon — AnnData Quick Explorer
 
-A lightweight tool to inspect `.h5ad` files quickly and generate a compact summary of:
-- AnnData shape
-- `obs` and `var` columns
-- sample / cluster distributions
-- quick UMAP preview if available
+A lightweight tool to quickly inspect `.h5ad` (AnnData) files and generate instant summaries with minimal setup.
 
-## Use cases
-- sanity-check a newly received AnnData
-- understand metadata before analysis
-- generate a quick summary for collaborators
+---
 
-## Installation
+## 🔍 Overview
+
+Working with single-cell datasets often requires loading full analysis pipelines just to understand the structure of the data.
+
+This tool provides a fast way to:
+- Inspect dataset dimensions
+- Explore metadata
+- Preview structure and distributions
+- Visualize embeddings (if available)
+
+---
+
+## ⚡ Features
+
+- Display AnnData shape (cells × genes)
+- List `obs` (cell metadata) columns
+- List `var` (gene metadata) columns
+- Show sample / cluster distributions
+- Quick UMAP visualization (if present)
+- Lightweight and fast execution
+
+---
+
+## 🚀 Installation
+
+Clone the repository:
+
 ```bash
-pip install -r requirements.txt
-```
-
-## CLI usage
-```bash
-python -m src.main --input data/example.h5ad --output results
-```
-
-## Output
-- `summary.txt`
-- `obs_columns.csv`
-- `var_columns.csv`
-- `categorical_counts_<column>.csv`
-- `umap_preview.png` if `X_umap` is present
-
-## Structure
-```text
-geneticcodon-anndata-quick-explorer/
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── LICENSE
-├── data/
-├── results/
-└── src/
-    ├── __init__.py
-    ├── main.py
-    └── utils.py
-```
-
-## Roadmap
-- add Streamlit mini-app
-- add top expressed genes summary
-- add layer inspection
+git clone https://github.com/GeneticCodon/Quick_Anndata_Explorer.git
+cd Quick_Anndata_Explorer
