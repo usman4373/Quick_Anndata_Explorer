@@ -126,11 +126,6 @@ This tool provides immediate insight into AnnData objects with minimal overhead.
 - Pandas
 - Matplotlib
 
----
-
-## Screenshot
-
-Add a screenshot here after running the app for better GitHub visibility.
 
 ---
 
