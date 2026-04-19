@@ -4,7 +4,7 @@ import os
 import anndata as ad
 import matplotlib.pyplot as plt
 import pandas as pd
-from .utils import save_dataframe
+from utils import save_dataframe
 
 def parse_args():
     parser = argparse.ArgumentParser(description="Quickly inspect an AnnData file.")
