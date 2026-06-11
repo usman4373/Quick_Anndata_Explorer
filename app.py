@@ -21,6 +21,11 @@ st.caption("Interactive exploration of AnnData (.h5ad) objects for rapid dataset
 st.sidebar.header("Settings")
 point_size = st.sidebar.slider("Embedding point size", min_value=4, max_value=40, value=10, step=1)
 preview_rows = st.sidebar.slider("Preview rows", min_value=5, max_value=50, value=15, step=5)
+downsample_frac = st.sidebar.slider(
+    "Downsample fraction for plots (reduce for very large datasets)",
+    min_value=0.05, max_value=1.0, value=1.0, step=0.05,
+    help="Randomly sample this fraction of cells to speed up plotting. Set to 1.0 to use all cells."
+)
 
 st.markdown(
     """
