@@ -1,151 +1,45 @@
-# Genetic Codon — AnnData Quick Explorer
+# Quick_Anndata_Explorer (Forked & Enhanced)
 
-An interactive **Streamlit** app to explore `.h5ad` (**AnnData**) files quickly and visually.
+- This is the forked version of the **[Quick_Anndata_Explorer](https://github.com/GeneticCodon/Quick_Anndata_Explorer/tree/main)** repository
+- Several modifications have been made to improve usability, especially for researchers who frequently switch between **Seurat (R)** and **Scanpy (Python)**
 
----
+## Modifications / Additions
 
-## Overview
-
-Single-cell datasets stored in **AnnData** format can be complex to inspect without running full analysis pipelines.
-
-**AnnData Quick Explorer** provides a fast, interactive interface to:
-
-- Understand dataset structure
-- Explore metadata (`obs` / `var`)
-- Visualize embeddings (UMAP / PCA)
-- Generate quick summaries
-- Export results for downstream use
-
-All directly from your browser.
+1. **Quality Control (QC) metrics** – Automatically computed to give you insight into how the data was filtered/analyzed, even when exploring already processed datasets.
+2. **Split by sample** – If the uploaded data is merged (e.g., multiple samples/batches), you can now **split and visualize each sample separately** – previously no "split by" option existed.
+3. **Save plots** – You can now export generated plots directly from the interface.
+4. **Memory optimization** – The tool now handles larger datasets more efficiently, reducing memory overhead during exploration.
+5. **Increased upload file size** – Streamlit’s default upload limit is `200 MB`. Follow the instructions below to increase it for large datasets.
 
 ---
 
-## Features
+> **Note**
+>
+> The original repository credit goes to the authors of **[Quick_Anndata_Explorer](https://github.com/GeneticCodon/Quick_Anndata_Explorer/tree/main)**
+> This fork only adds quality-of-life improvements
+> For installation, usage, and other instructions, please see the original repository **[here](https://github.com/GeneticCodon/Quick_Anndata_Explorer/tree/main)**
 
-- Dataset summary (cells, genes, metadata counts)
-- Inspect `obs` and `var` metadata
-- Visualize embeddings (UMAP, PCA, etc.)
-- Color embeddings by metadata columns
-- Generate value counts for any `obs` column
-- Plot expression of selected genes on embeddings
-- Download summaries (CSV, TXT, Excel)
-- Download gene-expression summary statistics
-- Lightweight, fast, and easy to use
+**Increasing File Upload Size (for large datasets)**
 
----
-
-## Installation
-
-### 1) Clone the repository
+To upload larger `AnnData` objects (e.g., >200 MB), run this:
 
 ```bash
-git clone https://github.com/GeneticCodon/Quick_Anndata_Explorer.git
-cd Quick_Anndata_Explorer
-```
-
-### 2) Install dependencies
-
-```bash
-pip install -r requirements.txt
+streamlit run app.py --server.maxUploadSize=2042  # size in MB (e.g., 5024 = 5 GB)
 ```
 
 ---
 
-## Usage
+## WHY THIS TOOL?
 
-Run the Streamlit app:
-
-```bash
-streamlit run app.py
-```
-
-Then:
-
-1. Open the browser (Streamlit may auto-launch).
-2. Upload your `.h5ad` file.
-3. Explore interactively.
+- This tool is extremely handy for those who work heavily with Seurat (like me) but occasionally need to explore already analyzed scRNA-seq datasets available in `.h5ad` format
+- So before wasting time in converting `.h5ad` into `Seurat` object, explore the data with this tool and see if it is good enough and have appropriate metadata according to your needs
+- It bridges the gap by providing a familiar, interactive interface while respecting the `AnnData` structure
+- Because even experienced Seurat users (like me :)) ) frequently forget how `AnnData` is organized, below is a quick comparison map to help you translate between the two
 
 ---
 
-## Demo dataset (recommended)
+![objects_map](data/Seurat and Anndata.png)
 
-For best results, use a processed dataset that already contains embeddings:
-
-```python
-import scanpy as sc
-
-adata = sc.datasets.pbmc68k_reduced()
-adata.write("demo_pbmc68k_reduced.h5ad")
-```
-
-Upload `demo_pbmc68k_reduced.h5ad` in the app to see:
-
-- Embedding plots
-- Metadata exploration
-- Richer outputs
+> More modifications are welcome! Feel free to contribute – especially spatial‑data‑specific QC metrics (e.g., spot purity, tissue coverage, or neighbor‐based stats)
 
 ---
-
-## Project structure
-
-```text
-.
-├── app.py              # Streamlit application
-├── requirements.txt    # Dependencies
-├── README.md
-├── data/               # Optional input files
-├── results/            # Optional outputs
-└── src/                # (Optional) CLI version
-```
-
----
-
-## Use cases
-
-- Quick inspection of `.h5ad` datasets
-- Teaching and demonstrations
-- Data validation before analysis
-- Debugging metadata issues
-- Rapid exploration for collaborators
-
----
-
-## Why this tool?
-
-Most workflows require loading full pipelines just to understand a dataset.
-
-This tool provides immediate insight into AnnData objects with minimal overhead.
-
----
-
-## Requirements
-
-- Python 3.8+
-- Streamlit
-- Scanpy / AnnData
-- Pandas
-- Matplotlib
-
-
----
-
-## About Genetic Codon
-
-Genetic Codon is a virtual bioinformatics lab focused on:
-
-- Multi-omics analysis
-- Spatial transcriptomics
-- Reproducible research pipelines
-- Training and mentorship
-
-- Website: www.geneticcodon.com
-
----
-
-## Support
-
-If you find this useful:
-
-- Star the repository
-- Share with your network
-- Contribute improvements
