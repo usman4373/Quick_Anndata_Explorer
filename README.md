@@ -16,7 +16,9 @@
 > **Note**
 >
 > The original repository credit goes to the authors of **[Quick_Anndata_Explorer](https://github.com/GeneticCodon/Quick_Anndata_Explorer/tree/main)**
+>
 > This fork only adds quality-of-life improvements
+>
 > For installation, usage, and other instructions, please see the original repository **[here](https://github.com/GeneticCodon/Quick_Anndata_Explorer/tree/main)**
 
 **Increasing File Upload Size (for large datasets)**
