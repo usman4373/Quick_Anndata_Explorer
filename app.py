@@ -19,7 +19,7 @@ st.title("Genetic Codon — Quick AnnData Explorer")
 st.caption("Interactive exploration of AnnData (.h5ad) objects for rapid dataset inspection.")
 
 st.sidebar.header("Settings")
-point_size = st.sidebar.slider("Embedding point size", min_value=4, max_value=40, value=10, step=1)
+point_size = st.sidebar.slider("Embedding point size", min_value=1, max_value=40, value=10, step=1)
 preview_rows = st.sidebar.slider("Preview rows", min_value=5, max_value=50, value=15, step=5)
 downsample_frac = st.sidebar.slider(
     "Downsample fraction for plots (reduce for very large datasets)",
