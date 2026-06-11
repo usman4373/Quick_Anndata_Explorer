@@ -40,7 +40,7 @@ streamlit run app.py --server.maxUploadSize=2042  # size in MB (e.g., 5024 = 5 G
 
 ---
 
-![objects_map](data/Seurat and Anndata.png)
+![objects_map](data/map.png)
 
 > More modifications are welcome! Feel free to contribute – especially spatial‑data‑specific QC metrics (e.g., spot purity, tissue coverage, or neighbor‐based stats)
 
